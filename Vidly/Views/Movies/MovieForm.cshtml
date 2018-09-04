@@ -1,0 +1,50 @@
+﻿@model Vidly.ViewModels.MovieViewModel
+@{
+    ViewBag.Title = "MovieForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="section section-title">
+    <h2 class="mb-5">
+        <span>New Movie</span>
+    </h2>
+</section>
+
+@using (Html.BeginForm("Save", "Movies"))
+{
+    @Html.ValidationSummary()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReleasedDate)
+        @Html.TextBoxFor(m => m.ReleasedDate, "{0:d MM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ReleasedDate)
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.GenreId)
+        @Html.DropDownListFor(m => m.GenreId, new SelectList(Model.Genre, "Id", "Name"), "Select Movie Genre", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.GenreId)
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.NumberInStock)
+        @Html.TextBoxFor(m => m.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.NumberInStock)
+    </div>
+   
+    @Html.AntiForgeryToken() //This HTML helper assign a token to the section so if a hacker redirects to other URL he can not access to our application from it.  
+    @Html.HiddenFor(m => m.Id) //This HTML Helper binds the Id to the model. If you don't use this helper then you don't pass any value to the controller so nothing is binded.
+    <button type="submit" class="btn btn-1 btn-danger"> Save</button>
+
+}
+
+
+@section scripts 
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    }
